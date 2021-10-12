@@ -1,6 +1,6 @@
 var poolData = {
-  UserPoolId: '',
-  ClientId: '',
+  UserPoolId: '', // INPUT
+  ClientId: '', // INPUT
 };
 
 var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
@@ -14,9 +14,9 @@ function start(){
   userData.Username = userName;
   var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
   cognitoUser.setAuthenticationFlowType('CUSTOM_AUTH');
-  var AuthenticateDetails = {
+  var AuthenticateDetails = new AmazonCognitoIdentity.AuthenticationDetails({
     Username: userName
-  }
+  });
   cognitoUser.initiateAuth(AuthenticateDetails, {
     onSuccess: function(result) {
       console.log("SUCCESS");
@@ -25,6 +25,7 @@ function start(){
       console.log("FAILED");
     },
     customChallenge: function(challengeParams) {
+      console.log("CHALLENGE");
       var challengeResponses = 'RESULT';
       cognitoUser.sendCustomChallengeAnswer(challengeResponses, this);
     }
